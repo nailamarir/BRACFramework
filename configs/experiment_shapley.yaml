@@ -1,0 +1,60 @@
+# BRAC Shapley Attribution Experiments Configuration
+# For Experiment 3: Agent Attribution Analysis
+
+seed: 42
+num_subtypes: 9
+num_agents: 4
+root_of_trust: pathology
+
+# Consensus settings
+consensus:
+  max_outer_rounds: 10
+  max_weiszfeld_iters: 50
+  convergence_threshold: 1.0e-4
+  lambda_0: 0.3
+
+# Shapley settings
+shapley:
+  compute_interactions: true
+  compute_subtype_specific: true
+
+# Experiment-specific settings
+experiments:
+  # Cases per subtype for attribution analysis
+  cases_per_subtype: 100
+
+  # Output directory
+  output_dir: results/shapley_attribution
+
+  # Expected patterns to validate (from paper)
+  expected_patterns:
+    FL:
+      dominant_agent: pathology
+      expected_phi_range: [0.35, 0.55]
+    BL:
+      dominant_agent: radiology
+      expected_phi_range: [0.25, 0.40]
+    CLL_SLL:
+      dominant_agent: laboratory
+      expected_phi_range: [0.30, 0.50]
+    DLBCL_GCB:
+      positive_interaction: [pathology, laboratory]
+    DLBCL_ABC:
+      positive_interaction: [pathology, laboratory]
+    MCL:
+      positive_interaction: [pathology, laboratory]
+
+# Mock agent configurations - tuned for realistic attribution patterns
+mock_agents:
+  pathology:
+    accuracy: 0.90
+    concentration: 15.0
+  radiology:
+    accuracy: 0.80
+    concentration: 8.0
+  laboratory:
+    accuracy: 0.85
+    concentration: 10.0
+  clinical:
+    accuracy: 0.70
+    concentration: 5.0

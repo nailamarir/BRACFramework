@@ -1,0 +1,69 @@
+# BRAC Framework Configuration
+# Default hyperparameters for Byzantine-Resilient Agentic Consensus
+
+seed: 42
+
+# Hypothesis space
+num_subtypes: 9   # K = number of NHL subtypes
+
+# Agents
+num_agents: 4     # n = number of diagnostic agents
+agent_modalities: [pathology, radiology, laboratory, clinical]
+root_of_trust: pathology
+
+# Trust estimation
+trust:
+  learnable: false   # Use default linear combination
+  weights: [0.4, 0.3, 0.2, -0.5]  # Q, C, S, -H(b)
+
+# Geometric median consensus
+consensus:
+  max_outer_rounds: 10     # T (outer belief refinement rounds)
+  max_weiszfeld_iters: 50  # L (inner Weiszfeld iterations per round)
+  convergence_threshold: 1.0e-4   # epsilon
+  lambda_0: 0.3            # Base receptivity for belief update
+  weiszfeld_tol: 1.0e-8    # Weiszfeld convergence tolerance
+  numerical_eps: 1.0e-10   # Epsilon for numerical stability
+
+# Conformal prediction
+conformal:
+  alpha: 0.05              # 95% coverage target
+  calibration_size: 500    # N
+
+# Shapley attribution
+shapley:
+  compute_interactions: true
+  compute_subtype_specific: true
+
+# Decision
+decision:
+  max_set_size_accept: 2   # Accept if |C_alpha| <= this value
+  min_confidence: 0.0      # Optional minimum confidence threshold
+
+# Experiments
+experiments:
+  num_synthetic_cases: 1000
+  byzantine_fractions: [0.0, 0.25, 0.50, 0.75]  # 0, 1, 2, 3 out of 4
+  attack_types: [type_i, type_ii, strategic, label_flip]
+  aggregators: [weighted_average, coordinate_median, krum, multi_krum, trimmed_mean, geometric_median]
+  num_runs: 10             # For confidence intervals
+
+# Agent simulation (mock mode)
+mock_agents:
+  pathology:
+    accuracy: 0.90
+    concentration: 15.0    # Dirichlet concentration (higher = more confident)
+  radiology:
+    accuracy: 0.80
+    concentration: 8.0
+  laboratory:
+    accuracy: 0.85
+    concentration: 10.0
+  clinical:
+    accuracy: 0.70
+    concentration: 5.0
+
+# Logging
+logging:
+  level: INFO
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"

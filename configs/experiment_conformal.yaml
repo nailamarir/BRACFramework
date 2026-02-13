@@ -1,0 +1,51 @@
+# BRAC Conformal Prediction Experiments Configuration
+# For Experiment 2: Coverage Guarantee Verification
+
+seed: 42
+num_subtypes: 9
+num_agents: 4
+root_of_trust: pathology
+
+# Consensus settings
+consensus:
+  max_outer_rounds: 10
+  max_weiszfeld_iters: 50
+  convergence_threshold: 1.0e-4
+  lambda_0: 0.3
+
+# Experiment-specific settings
+experiments:
+  # Data sizes
+  calibration_size: 500
+  test_size: 500
+
+  # Alpha values to test (1-alpha = target coverage)
+  alpha_values:
+    - 0.01   # 99% coverage target
+    - 0.05   # 95% coverage target
+    - 0.10   # 90% coverage target
+    - 0.20   # 80% coverage target
+
+  # Test with and without Byzantine agents
+  byzantine_fractions: [0.0, 0.25]
+
+  # Number of runs
+  num_runs: 10
+
+  # Output directory
+  output_dir: results/conformal_coverage
+
+# Mock agent configurations
+mock_agents:
+  pathology:
+    accuracy: 0.90
+    concentration: 15.0
+  radiology:
+    accuracy: 0.80
+    concentration: 8.0
+  laboratory:
+    accuracy: 0.85
+    concentration: 10.0
+  clinical:
+    accuracy: 0.70
+    concentration: 5.0

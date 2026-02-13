@@ -1,0 +1,64 @@
+# BRAC Byzantine Attack Experiments Configuration
+# For Experiment 1: Byzantine Resilience Analysis
+
+seed: 42
+num_subtypes: 9
+num_agents: 4
+root_of_trust: pathology
+
+# Consensus settings
+consensus:
+  max_outer_rounds: 10
+  max_weiszfeld_iters: 50
+  convergence_threshold: 1.0e-4
+  lambda_0: 0.3
+  weiszfeld_tol: 1.0e-8
+
+# Conformal settings
+conformal:
+  alpha: 0.05
+
+# Experiment-specific settings
+experiments:
+  # Number of synthetic cases per configuration
+  num_cases: 1000
+
+  # Byzantine configurations to test
+  byzantine_counts: [0, 1, 2, 3]  # Number of Byzantine agents
+
+  # Attack types to evaluate
+  attack_types:
+    - type_i      # Data fault: uncertain, noisy
+    - type_ii     # Model fault: confident but wrong
+    - strategic   # Adversarial: optimal misleading
+    - label_flip  # Simple flip attack
+
+  # Aggregation methods to compare
+  aggregators:
+    - weighted_average
+    - coordinate_median
+    - krum
+    - multi_krum
+    - trimmed_mean
+    - geometric_median  # Our method
+
+  # Number of runs for confidence intervals
+  num_runs: 10
+
+  # Output directory
+  output_dir: results/byzantine_resilience
+
+# Mock agent configurations
+mock_agents:
+  pathology:
+    accuracy: 0.90
+    concentration: 15.0
+  radiology:
+    accuracy: 0.80
+    concentration: 8.0
+  laboratory:
+    accuracy: 0.85
+    concentration: 10.0
+  clinical:
+    accuracy: 0.70
+    concentration: 5.0
